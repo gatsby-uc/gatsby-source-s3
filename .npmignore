@@ -2,7 +2,10 @@
 node_modules
 
 # dev files
-src 
+src
+.github
 .eslintrc.js
 .prettierrc.js
+release.config.js
+commitlint.config.js
 tsconfig.json
