@@ -1,64 +1,83 @@
 # gatsby-source-s3
 
-[![Build Status](https://travis-ci.org/DSchau/gatsby-source-s3.svg?branch=master)](https://travis-ci.org/DSchau/gatsby-source-s3)
-
-Source plugin for pulling in S3 data from AWS for further processing via Gatsby/GraphQL
+A Gatsby plugin to source objects and images from AWS S3.
 
 ## Install
 
 ```bash
-npm install gatsby-source-s3 --save-dev
+# with npm
+npm install @robinmetral/gatsby-source-s3
+# with yarn
+yarn add @robinmetral/gatsby-source-s3
 ```
 
-## How to use
+## Configure
 
-In your `gatsby-config.js`:
+Declare the plugin in your `gatsby-config.js`, taking care to pass your AWS
+credentials as
+[environment variables](https://www.gatsbyjs.org/docs/environment-variables/):
 
 ```javascript
-plugins: [
-  {
-    resolve: 'gatsby-source-s3',
-    options: {
-      aws: {
-        accessKeyId: 'youraccesskeyhere',
-        secretAccessKey: 'hunter2',
-        sessionToken: 'yoursessiontokenhere', // optional session token
-      },
-      buckets: ['your-s3-bucket-name'],
-    },
-  },
-];
+// configure dotenv
+// see https://www.gatsbyjs.org/docs/environment-variables
+require("dotenv").config({
+  path: `.env.${process.env.NODE_ENV}`
+});
+
+module.exports = {
+  plugins: [
+    {
+      resolve: "gatsby-source-s3",
+      options: {
+        aws: {
+          accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+          secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+          region: "eu-central-1"
+        },
+        buckets: ["my-bucket-name", "other-bucket"]
+      }
+    }
+  ]
+};
 ```
 
-Once added to `gatsby-config.js` S3 objects can be queried with the queries `allS3Object` and/or `allS3Image` if an image node is detected. An example query is below:
+## Query
+
+S3 objects can be queried in GraphQL as "s3Object" of "allS3Object":
 
 ```graphql
-query IndexQuery {
-  allS3Image {
-    edges {
-      node {
-        Key
-        Url
-      }
+query AllObjectsQuery {
+  allS3Object {
+    nodes {
+      Key
+      Url
     }
   }
 }
 ```
 
-### Image processing
+## Image processing
 
-This plugin also sources any detected images in the S3 bucket(s) for local processing with sharp/Gatsby. Install gatsby-transformer-sharp, gatsby-plugin-sharp to tie into this processing.
+Any images in your bucket(s) will be downloaded by the plugin and stored as
+local files, to be processed with `gatsby-plugin-sharp` and
+`gatsby-transformer-sharp`.
+
+```bash
+# with npm
+npm install gatsby-plugin-sharp gatsby-transformer-sharp
+# with yarn
+yarn add gatsby-plugin-sharp gatsby-transformer-sharp
+```
 
 ```graphql
-query IndexQuery {
-  images: allS3Image {
-    edges {
-      node {
-        file: localFile {
-          image: childImageSharp {
-            sizes(maxWidth: 400, maxHeight: 400) {
-              ...GatsbyImageSharpSizes_withWebp_tracedSVG
-            }
+query AllImagesQuery {
+  images: allS3Object {
+    nodes {
+      Key
+      localFile {
+        childImageSharp {
+          fluid(maxWidth: 1024) {
+            ...GatsbyImageSharpFluid
           }
         }
       }
@@ -66,3 +85,10 @@ query IndexQuery {
   }
 }
 ```
+
+## Thanks
+
+This plugin was based on Dustin Schau's
+[`gatsby-source-s3`](https://github.com/DSchau/gatsby-source-s3/) and influenced
+by Jesse Stuart's Typescript
+[`gatsby-source-s3-image`](https://github.com/jessestuart/gatsby-source-s3-image).
