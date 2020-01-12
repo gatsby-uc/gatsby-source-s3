@@ -1,4 +1,8 @@
-__tests__
-src
-yarn.lock
-package-lock.json
+# dependencies
+node_modules
+
+# dev files
+src 
+.eslintrc.js
+.prettierrc.js
+tsconfig.json
