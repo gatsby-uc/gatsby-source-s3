@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "lib": ["ESNext"],
+    "module": "CommonJS",
+    // support node 10 and newer
+    "target": "ES2018",
+    "removeComments": true,
+    "strict": true,
+    "outDir": ".",
+    // don't type check libs
+    "skipLibCheck": true,
+    // using implicit any for gatsby args
+    "noImplicitAny": false
+  },
+  "files": ["./src/gatsby-node.ts"]
+}

@@ -1,11 +1,5 @@
+# dependencies
 node_modules
-*-error.log
 
-/*.js
-!/index.js
-!/.babelrc.js
-!/jest.config.js
-
-# secrets
-.env
-.npmrc
+# generated source plugin
+gatsby-node.js
