@@ -2,7 +2,7 @@
   "name": "@robinmetral/gatsby-source-s3",
   "description": "A Gatsby plugin to source objects and images from AWS S3",
   "version": "0.0.0",
-  "main": "index.js",
+  "main": "gatsby-node.js",
   "author": "Robin Métral <robin@metral.ch>",
   "repository": "https://github.com/robinmetral/gatsby-source-s3.git",
   "license": "MIT",
@@ -12,6 +12,8 @@
     "gatsby-source-plugin"
   ],
   "devDependencies": {
+    "@commitlint/cli": "^8.3.4",
+    "@commitlint/config-conventional": "^8.3.4",
     "@types/node": "^13.1.6",
     "@typescript-eslint/eslint-plugin": "^2.15.0",
     "@typescript-eslint/parser": "^2.15.0",
@@ -19,6 +21,7 @@
     "eslint-config-prettier": "^6.9.0",
     "eslint-plugin-prettier": "^3.1.2",
     "gatsby": "^2.18.21",
+    "husky": "^4.0.7",
     "prettier": "^1.19.1",
     "semantic-release": "^16.0.1",
     "typescript": "^3.7.4"
@@ -33,5 +36,10 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
   }
 }
