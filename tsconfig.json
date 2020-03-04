@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "lib": ["ESNext"],
+    "lib": ["ES2018"],
     "module": "CommonJS",
     // support node 10 and newer
     "target": "ES2018",

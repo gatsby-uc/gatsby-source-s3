@@ -50,13 +50,16 @@ export async function sourceNodes(
   };
 
   try {
-    const objects = await Promise.all(
+    let objects: Array<any> = await Promise.all(
       buckets.map(bucket => listObjects(bucket))
     );
+    // flatten objects
+    // flat() is not supported in node 10
+    objects = [].concat(...objects);
 
     // create file nodes
     // todo touch nodes if they exist already
-    objects?.flat().forEach(async object => {
+    objects?.forEach(async object => {
       const { Key, Bucket } = object;
       const { region } = awsConfig;
 
