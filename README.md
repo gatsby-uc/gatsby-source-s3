@@ -27,18 +27,38 @@ require("dotenv").config({
 module.exports = {
   plugins: [
     {
-      resolve: "gatsby-source-s3",
+      resolve: `@robinmetral/gatsby-source-s3`,
       options: {
         aws: {
           accessKeyId: process.env.AWS_ACCESS_KEY_ID,
           secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-          region: "eu-central-1"
+          region: process.env.AWS_REGION
         },
-        buckets: ["my-bucket-name", "other-bucket"]
+        buckets: ["my-bucket", "my-second-bucket"]
       }
     }
   ]
 };
+```
+
+Currently, your buckets will need to be configured for public access with this
+access policy: (add your bucket name under `Statement.Resource`)
+
+```json
+{
+  "Version": "2008-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowPublicRead",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "*"
+      },
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::my-bucket/*"
+    }
+  ]
+}
 ```
 
 ## Query

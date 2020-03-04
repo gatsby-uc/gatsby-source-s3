@@ -13,6 +13,8 @@ type pluginOptionsType = {
   buckets: string[];
 };
 
+type ObjectType = AWS.S3.Object & { Bucket: string };
+
 // source all objects from s3
 export async function sourceNodes(
   { actions: { createNode }, createNodeId, createContentDigest, reporter },
@@ -26,42 +28,55 @@ export async function sourceNodes(
   // get objects
   const s3 = new AWS.S3();
 
-  try {
+  const listObjects = async bucket => {
     // todo improve this call
     // see https://stackoverflow.com/a/49888947
     const response = await s3
       .listObjectsV2({
-        // todo handle several buckets
-        Bucket: buckets[0]
+        Bucket: bucket
         // todo handle continuation token
         // ContinuationToken: token,
       })
       .promise();
 
+    // add bucket key
+    const objects = response.Contents?.reduce((acc: ObjectType[], cur) => {
+      const object: ObjectType = { ...cur, Bucket: bucket };
+      acc.push(object);
+      return acc;
+    }, []);
+
+    return objects;
+  };
+
+  try {
+    const objects = await Promise.all(
+      buckets.map(bucket => listObjects(bucket))
+    );
+
     // create file nodes
     // todo touch nodes if they exist already
-    response.Contents &&
-      response.Contents.forEach(async object => {
-        const { Key } = object;
-        const { region } = awsConfig;
-        const node = {
-          // node meta
-          id: createNodeId(`s3-object-${object.Key}`),
-          parent: null,
-          children: [],
-          internal: {
-            type: "S3Object",
-            content: JSON.stringify(object),
-            contentDigest: createContentDigest(object)
-          },
-          // s3 object data
-          Url: `https://s3.${region ? `${region}.` : ""}amazonaws.com/${
-            buckets[0]
-          }/${Key}`,
-          ...object
-        };
-        createNode(node);
+    objects?.flat().forEach(async object => {
+      const { Key, Bucket } = object;
+      const { region } = awsConfig;
+
+      createNode({
+        ...object,
+        // construct url
+        Url: `https://s3.${
+          region ? `${region}.` : ""
+        }amazonaws.com/${Bucket}/${Key}`,
+        // node meta
+        id: createNodeId(`s3-object-${Key}`),
+        parent: null,
+        children: [],
+        internal: {
+          type: "S3Object",
+          content: JSON.stringify(object),
+          contentDigest: createContentDigest(object)
+        }
       });
+    });
   } catch (error) {
     reporter.error(error);
   }
