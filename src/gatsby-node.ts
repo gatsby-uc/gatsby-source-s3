@@ -28,34 +28,51 @@ export async function sourceNodes(
   // get objects
   const s3 = new AWS.S3();
 
-  const listObjects = async bucket => {
-    // todo improve this call
-    // see https://stackoverflow.com/a/49888947
-    const response = await s3
-      .listObjectsV2({
-        Bucket: bucket
-        // todo handle continuation token
-        // ContinuationToken: token,
-      })
-      .promise();
+  const getS3ListObjects = async (params) => {
+    return await s3.listObjectsV2(params)
+      .promise()
+      .catch((error) => {
+        throw new Error('Problem getting S3 list objects.', error)
+      });
+  }
 
-    // add bucket key
-    const objects = response.Contents?.reduce((acc: ObjectType[], cur) => {
-      const object: ObjectType = { ...cur, Bucket: bucket };
-      acc.push(object);
-      return acc;
-    }, []);
+  const listAllS3Items = async (bucket) => {
+    const allS3Items = [];
 
-    return objects;
-  };
+    const data = await getS3ListObjects({ Bucket: bucket });
+
+    if (data && data.Contents) {
+      data.Contents.forEach((content) => {
+        allS3Items.push({ ...content, Bucket: bucket });
+      });
+    } else {
+      throw new Error(`bucket '${bucket}' is empty`)
+    }
+
+    let nextToken = data && data.IsTruncated && data.NextContinuationToken;
+
+    while (nextToken) {
+      const data = await getS3ListObjects({ Bucket: bucket, ContinuationToken: nextToken });
+
+      if (data && data.Contents) {
+        data.Contents.forEach((content) => {
+          allS3Items.push({ ...content, Bucket: bucket });
+        });
+      }
+      nextToken = data && data.IsTruncated && data.NextContinuationToken;
+    }
+
+    return allS3Items.reduce((acc, val) => acc.concat(val), []);
+  }
 
   try {
-    let objects: Array<any> = await Promise.all(
-      buckets.map(bucket => listObjects(bucket))
+    const allBucketsObjects = await Promise.all(
+      buckets.map(bucket => listAllS3Items(bucket))
     );
+
     // flatten objects
     // flat() is not supported in node 10
-    objects = [].concat(...objects);
+    const objects = allBucketsObjects.reduce((acc, val) => acc.concat(val), []);
 
     // create file nodes
     // todo touch nodes if they exist already
@@ -68,7 +85,7 @@ export async function sourceNodes(
         // construct url
         Url: `https://s3.${
           region ? `${region}.` : ""
-        }amazonaws.com/${Bucket}/${Key}`,
+          }amazonaws.com/${Bucket}/${Key}`,
         // node meta
         id: createNodeId(`s3-object-${Key}`),
         parent: null,
