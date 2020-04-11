@@ -32,7 +32,7 @@ export async function sourceNodes(
     return await s3.listObjectsV2(params)
       .promise()
       .catch((error) => {
-        throw new Error('Problem getting S3 list objects.', error)
+        reporter.error(`Error listing S3 objects on bucket "${params.Bucket}": ${error}`)
       });
   }
 
