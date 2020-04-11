@@ -39,7 +39,7 @@ export async function sourceNodes(
       });
   }
 
-  const listAllS3Items = async (bucket) => {
+  const listAllS3Items = async (bucket: string) => {
     const allS3Items = [];
 
     const data = await getS3ListObjects({ Bucket: bucket });
