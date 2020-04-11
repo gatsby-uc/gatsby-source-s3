@@ -28,7 +28,10 @@ export async function sourceNodes(
   // get objects
   const s3 = new AWS.S3();
 
-  const getS3ListObjects = async (params) => {
+  const getS3ListObjects = async (params: {
+    Bucket: string;
+    ContinuationToken?: string;
+  }) => {
     return await s3.listObjectsV2(params)
       .promise()
       .catch((error) => {
