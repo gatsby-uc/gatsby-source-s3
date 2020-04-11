@@ -77,7 +77,7 @@ export async function sourceNodes(
   };
 
   try {
-    const allBucketsObjects = await Promise.all(
+    const allBucketsObjects: Array<any> = await Promise.all(
       buckets.map(bucket => listAllS3Objects(bucket))
     );
 
