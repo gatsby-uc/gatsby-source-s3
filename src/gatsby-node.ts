@@ -96,7 +96,7 @@ export async function sourceNodes(
         // construct url
         Url: `https://s3.${
           region ? `${region}.` : ""
-          }amazonaws.com/${Bucket}/${Key}`,
+        }amazonaws.com/${Bucket}/${Key}`,
         // node meta
         id: createNodeId(`s3-object-${Key}`),
         parent: null,
