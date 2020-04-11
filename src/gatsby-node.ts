@@ -46,7 +46,7 @@ export async function sourceNodes(
         allS3Items.push({ ...content, Bucket: bucket });
       });
     } else {
-      throw new Error(`bucket '${bucket}' is empty`)
+      reporter.error(`Error processing objects from bucket "${bucket}". Is it empty?`)
     }
 
     let nextToken = data && data.IsTruncated && data.NextContinuationToken;
