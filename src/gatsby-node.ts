@@ -28,34 +28,62 @@ export async function sourceNodes(
   // get objects
   const s3 = new AWS.S3();
 
-  const listObjects = async bucket => {
-    // todo improve this call
-    // see https://stackoverflow.com/a/49888947
-    const response = await s3
-      .listObjectsV2({
-        Bucket: bucket
-        // todo handle continuation token
-        // ContinuationToken: token,
-      })
-      .promise();
+  const getS3ListObjects = async (params: {
+    Bucket: string;
+    ContinuationToken?: string;
+  }) => {
+    return await s3
+      .listObjectsV2(params)
+      .promise()
+      .catch(error => {
+        reporter.error(
+          `Error listing S3 objects on bucket "${params.Bucket}": ${error}`
+        );
+      });
+  };
 
-    // add bucket key
-    const objects = response.Contents?.reduce((acc: ObjectType[], cur) => {
-      const object: ObjectType = { ...cur, Bucket: bucket };
-      acc.push(object);
-      return acc;
-    }, []);
+  const listAllS3Objects = async (bucket: string) => {
+    const allS3Objects: ObjectType[] = [];
 
-    return objects;
+    const data = await getS3ListObjects({ Bucket: bucket });
+
+    if (data && data.Contents) {
+      data.Contents.forEach(object => {
+        allS3Objects.push({ ...object, Bucket: bucket });
+      });
+    } else {
+      reporter.error(
+        `Error processing objects from bucket "${bucket}". Is it empty?`
+      );
+    }
+
+    let nextToken = data && data.IsTruncated && data.NextContinuationToken;
+
+    while (nextToken) {
+      const data = await getS3ListObjects({
+        Bucket: bucket,
+        ContinuationToken: nextToken
+      });
+
+      if (data && data.Contents) {
+        data.Contents.forEach(object => {
+          allS3Objects.push({ ...object, Bucket: bucket });
+        });
+      }
+      nextToken = data && data.IsTruncated && data.NextContinuationToken;
+    }
+
+    return allS3Objects;
   };
 
   try {
-    let objects: Array<any> = await Promise.all(
-      buckets.map(bucket => listObjects(bucket))
+    const allBucketsObjects: ObjectType[][] = await Promise.all(
+      buckets.map(bucket => listAllS3Objects(bucket))
     );
+
     // flatten objects
     // flat() is not supported in node 10
-    objects = [].concat(...objects);
+    const objects = allBucketsObjects.reduce((acc, val) => acc.concat(val), []);
 
     // create file nodes
     // todo touch nodes if they exist already
