@@ -47,7 +47,7 @@ export async function sourceNodes(
 
     const data = await getS3ListObjects({ Bucket: bucket });
 
-    if (data?.Contents) {
+    if (data && data.Contents) {
       data.Contents.forEach(object => {
         allS3Objects.push({ ...object, Bucket: bucket });
       });
