@@ -1,0 +1,59 @@
+{
+  extends: [
+    // add [skip ci] to commit body when pinning
+    ":pinSkipCi"
+  ],
+  // run for 6 hours on Monday mornings
+  schedule: "before 6am on Monday",
+  // ignore node_modules
+  // the :ignoreModulesAndTests preset doesn't work here because it also ignores examples
+  ignorePaths: ["**/node_modules/**"],
+  // bump versions instead of widening the range
+  // https://docs.renovatebot.com/configuration-options/#rangestrategy
+  rangeStrategy: "bump",
+  // auto-merge everything but major versions
+  // https://docs.renovatebot.com/configuration-options/#automerge
+  automerge: true,
+  major: {
+    automerge: false
+  },
+  // don't create 2 PRs if there is a new minor and major
+  // https://docs.renovatebot.com/configuration-options/#separatemajorminor
+  separateMajorMinor: false,
+  // group updates
+  // https://docs.renovatebot.com/configuration-options/#groupname
+  packageRules: [
+    {
+      extends: "monorepo:react",
+      groupName: "react monorepo"
+    },
+    {
+      extends: "monorepo:gatsby",
+      groupName: "gatsby monorepo"
+    },
+    {
+      sourceUrlPrefixes: ["https://github.com/system-ui/theme-ui"],
+      groupName: "theme ui monorepo"
+    },
+    {
+      packagePatterns: ["@testing-library"],
+      groupName: "testing library packages"
+    },
+    {
+      extends: "monorepo:jest",
+      groupName: "jest monorepo"
+    },
+    {
+      extends: "monorepo:commitlint",
+      groupName: "commitlint monorepo"
+    }
+  ],
+  // use semantic commits and the parent dir as the scope
+  // "chore(theme): update gatsby"
+  // https://docs.renovatebot.com/configuration-options/#semanticcommits
+  semanticCommits: true,
+  // add custom branch prefix
+  // "chore/update-gatsby"
+  // https://docs.renovatebot.com/configuration-options/#branchprefix
+  branchPrefix: "chore/update-"
+}
