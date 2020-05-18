@@ -33,7 +33,7 @@
     "build": "tsc",
     "lint": "eslint '*/**/*.{ts,tsx}'",
     "prestart": "yarn build && npm pack && (cd examples/gatsby-starter-source-s3 && yarn install && yarn add file:../../robinmetral-gatsby-source-s3-0.0.0-semantically-released.tgz)",
-    "start": "(cd examples/gatsby-starter-source-s3 && gatsby build && gatsby serve)"
+    "start": "(cd examples/gatsby-starter-source-s3 && gatsby build)"
   },
   "dependencies": {
     "aws-sdk": "^2.678.0",
