@@ -10,3 +10,6 @@ robinmetral-gatsby-source-s3-0.0.0-semantically-released.tgz
 .cache
 public
 examples/gatsby-starter-source-s3/yarn.lock
+
+# cypress
+tests/screenshots
