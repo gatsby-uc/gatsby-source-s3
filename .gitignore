@@ -3,3 +3,13 @@ node_modules
 
 # generated source plugin
 gatsby-node.js
+robinmetral-gatsby-source-s3-0.0.0-semantically-released.tgz
+
+# example site
+.env
+.cache
+public
+examples/gatsby-starter-source-s3/yarn.lock
+
+# cypress
+tests/screenshots
