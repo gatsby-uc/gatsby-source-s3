@@ -23,7 +23,7 @@
     "gatsby": "^2.18.21",
     "husky": "^4.0.7",
     "prettier": "^1.19.1",
-    "semantic-release": "^16.0.1",
+    "semantic-release": "^17.0.7",
     "typescript": "^3.7.4"
   },
   "scripts": {
