@@ -31,7 +31,7 @@
     "lint": "eslint '*/**/*.{ts,tsx}'"
   },
   "dependencies": {
-    "aws-sdk": "^2.600.0",
+    "aws-sdk": "^2.678.0",
     "gatsby-source-filesystem": "^2.1.46"
   },
   "publishConfig": {
