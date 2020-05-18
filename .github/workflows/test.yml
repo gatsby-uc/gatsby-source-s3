@@ -15,3 +15,11 @@ jobs:
         run: yarn install
       - name: Lint
         run: yarn lint
+      - name: Set up and start example
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+        run: yarn start # also runs prestart
+      - name: E2E
+        run: echo "Set up cypress"
