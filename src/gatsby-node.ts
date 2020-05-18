@@ -35,7 +35,7 @@ export async function sourceNodes(
     return await s3
       .listObjectsV2(params)
       .promise()
-      .catch(error => {
+      .catch((error) => {
         reporter.error(
           `Error listing S3 objects on bucket "${params.Bucket}": ${error}`
         );
@@ -48,7 +48,7 @@ export async function sourceNodes(
     const data = await getS3ListObjects({ Bucket: bucket });
 
     if (data && data.Contents) {
-      data.Contents.forEach(object => {
+      data.Contents.forEach((object) => {
         allS3Objects.push({ ...object, Bucket: bucket });
       });
     } else {
@@ -62,11 +62,11 @@ export async function sourceNodes(
     while (nextToken) {
       const data = await getS3ListObjects({
         Bucket: bucket,
-        ContinuationToken: nextToken
+        ContinuationToken: nextToken,
       });
 
       if (data && data.Contents) {
-        data.Contents.forEach(object => {
+        data.Contents.forEach((object) => {
           allS3Objects.push({ ...object, Bucket: bucket });
         });
       }
@@ -78,7 +78,7 @@ export async function sourceNodes(
 
   try {
     const allBucketsObjects: ObjectType[][] = await Promise.all(
-      buckets.map(bucket => listAllS3Objects(bucket))
+      buckets.map((bucket) => listAllS3Objects(bucket))
     );
 
     // flatten objects
@@ -87,7 +87,7 @@ export async function sourceNodes(
 
     // create file nodes
     // todo touch nodes if they exist already
-    objects?.forEach(async object => {
+    objects?.forEach(async (object) => {
       const { Key, Bucket } = object;
       const { region } = awsConfig;
 
@@ -104,8 +104,8 @@ export async function sourceNodes(
         internal: {
           type: "S3Object",
           content: JSON.stringify(object),
-          contentDigest: createContentDigest(object)
-        }
+          contentDigest: createContentDigest(object),
+        },
       });
     });
   } catch (error) {
@@ -119,7 +119,7 @@ export async function onCreateNode({
   store,
   cache,
   reporter,
-  createNodeId
+  createNodeId,
 }) {
   if (node.internal.type === "S3Object" && node.Key && isImage(node.Key)) {
     try {
@@ -131,7 +131,7 @@ export async function onCreateNode({
         cache,
         reporter,
         createNode,
-        createNodeId
+        createNodeId,
       });
 
       if (imageFile) {
