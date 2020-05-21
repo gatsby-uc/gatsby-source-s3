@@ -8,6 +8,7 @@ type pluginOptionsType = {
   aws: {
     accessKeyId: string;
     secretAccessKey: string;
+    region: string;
   };
   buckets: string[];
 };
