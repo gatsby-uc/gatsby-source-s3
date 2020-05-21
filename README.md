@@ -44,8 +44,34 @@ module.exports = {
 
 You can use the plugin both with private and public buckets.
 
-```json
+We recommend creating an IAM user to use with this plugin, and attach an IAM
+policy to access specific buckets.
 
+The policy needs to allow `ListBucket` on buckets and `GetObject` on bucket
+contents (`/*`). For example:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": ["s3:ListBucket"],
+      "Resource": [
+        "arn:aws:s3:::gatsby-source-s3-example",
+        "arn:aws:s3:::gatsby-source-s3-example-2"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": ["s3:GetObject"],
+      "Resource": [
+        "arn:aws:s3:::gatsby-source-s3-example/*",
+        "arn:aws:s3:::gatsby-source-s3-example-2/*"
+      ]
+    }
+  ]
+}
 ```
 
 ## Querying S3 objects
