@@ -1,4 +1,4 @@
-# Testing `gatsby-source-s3`
+# Testing gatsby-source-s3
 
 The plugin is tested end-to-end using [Cypress](https://www.cypress.io/).
 
@@ -14,6 +14,9 @@ following cases:
 - [x] sourcing from private buckets (added in #20, using a pre-signed URL)
 - [x] sourcing from a bucket with more than 1000 objects (added in #43, using a
       continuation token)
+
+In total, the buckets hold 1502 objects, and the e2e tests assert that all are
+correctly sourced and rendered.
 
 Read more about the example site's AWS setup in the
 [example site's README](../examples/gatsby-starter-source-s3).
