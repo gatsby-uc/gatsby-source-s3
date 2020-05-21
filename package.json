@@ -36,6 +36,7 @@
     "lint": "eslint '*/**/*.{ts,tsx}'",
     "prestart": "yarn build && npm pack && (cd examples/gatsby-starter-source-s3 && yarn install)",
     "start": "(cd examples/gatsby-starter-source-s3 && gatsby build && gatsby serve)",
+    "start:local": "yarn cache clean && (cd examples/gatsby-starter-source-s3 && rm -rf node_modules .cache public yarn.lock) && yarn start",
     "test": "cypress run",
     "e2e": "start-server-and-test http://localhost:9000"
   },
