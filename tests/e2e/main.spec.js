@@ -4,4 +4,8 @@ describe("e2e", () => {
 
     cy.get("img").should("exist");
   });
+
+  it("should contain all images", () => {
+    cy.get(".images-grid").find(".s3-image").should("have.length", 1502);
+  });
 });

@@ -3,12 +3,26 @@ import { graphql } from "gatsby";
 import Img from "gatsby-image";
 
 const IndexPage = ({ data }) => (
-  <>
+  <main style={{ fontFamily: "monospace" }}>
     <h1>{data.site.siteMetadata.title}</h1>
-    {data.allS3Object.nodes.map(image => (
-      <Img fixed={image.localFile.childImageSharp.fixed} alt={image.Key} />
-    ))}
-  </>
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fit,minmax(256px, 1fr))",
+      }}
+      className="images-grid"
+    >
+      {data.allS3Object.nodes.map((image) => (
+        <div className={`s3-image ${image.Key}-${image.Bucket}`}>
+          <Img fixed={image.localFile.childImageSharp.fixed} alt={image.Key} />
+          <br />
+          Key: {image.Key}
+          <br />
+          Bucket: {image.Bucket}
+        </div>
+      ))}
+    </div>
+  </main>
 );
 
 export const IMAGES_QUERY = graphql`
@@ -21,6 +35,7 @@ export const IMAGES_QUERY = graphql`
     allS3Object {
       nodes {
         Key
+        Bucket
         localFile {
           childImageSharp {
             fixed(width: 256) {
