@@ -21,7 +21,7 @@ credentials as
 // configure dotenv
 // see https://www.gatsbyjs.org/docs/environment-variables
 require("dotenv").config({
-  path: `.env.${process.env.NODE_ENV}`
+  path: `.env.${process.env.NODE_ENV}`,
 });
 
 module.exports = {
@@ -32,12 +32,11 @@ module.exports = {
         aws: {
           accessKeyId: process.env.AWS_ACCESS_KEY_ID,
           secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-          region: process.env.AWS_REGION
         },
-        buckets: ["my-bucket", "my-second-bucket"]
-      }
-    }
-  ]
+        buckets: ["my-bucket", "my-second-bucket"],
+      },
+    },
+  ],
 };
 ```
 
