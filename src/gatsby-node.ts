@@ -24,10 +24,9 @@ export async function sourceNodes(
 
   // configure aws
   AWS.config.update(awsConfig);
-
-  // get objects
   const s3 = new AWS.S3();
 
+  // get objects
   const getS3ListObjects = async (params: {
     Bucket: string;
     ContinuationToken?: string;
@@ -89,14 +88,16 @@ export async function sourceNodes(
     // todo touch nodes if they exist already
     objects?.forEach(async (object) => {
       const { Key, Bucket } = object;
-      const { region } = awsConfig;
+      // get pre-signed URL
+      const Url = s3.getSignedUrl("getObject", {
+        Bucket,
+        Key,
+        Expires: 60,
+      });
 
       createNode({
         ...object,
-        // construct url
-        Url: `https://s3.${
-          region ? `${region}.` : ""
-        }amazonaws.com/${Bucket}/${Key}`,
+        Url,
         // node meta
         id: createNodeId(`s3-object-${Key}`),
         parent: null,

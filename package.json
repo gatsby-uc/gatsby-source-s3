@@ -34,7 +34,7 @@
   "scripts": {
     "build": "tsc",
     "lint": "eslint '*/**/*.{ts,tsx}'",
-    "prestart": "yarn build && npm pack && (cd examples/gatsby-starter-source-s3 && yarn install && yarn add file:../../robinmetral-gatsby-source-s3-0.0.0-semantically-released.tgz)",
+    "prestart": "yarn build && npm pack && (cd examples/gatsby-starter-source-s3 && yarn install)",
     "start": "(cd examples/gatsby-starter-source-s3 && gatsby build && gatsby serve)",
     "test": "cypress run",
     "e2e": "start-server-and-test http://localhost:9000"
