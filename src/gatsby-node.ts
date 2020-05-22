@@ -1,8 +1,6 @@
 import { createRemoteFileNode } from "gatsby-source-filesystem";
 import AWS = require("aws-sdk");
 
-const s3 = new AWS.S3();
-
 const isImage = (key: string): boolean =>
   /\.(jpe?g|png|webp|tiff?)$/i.test(key);
 
@@ -26,6 +24,7 @@ export async function sourceNodes(
 
   // configure aws
   AWS.config.update(awsConfig);
+  const s3 = new AWS.S3();
 
   // get objects
   const getS3ListObjects = async (params: {
@@ -87,10 +86,19 @@ export async function sourceNodes(
 
     // create file nodes
     objects?.forEach(async (object) => {
+      const { Bucket, Key } = object;
+      // get pre-signed URL
+      const url = s3.getSignedUrl("getObject", {
+        Bucket,
+        Key,
+        Expires: 60,
+      });
+
       createNode({
         ...object,
+        url,
         // node meta
-        id: createNodeId(`s3-object-${object.Key}`),
+        id: createNodeId(`s3-object-${Key}`),
         parent: null,
         children: [],
         internal: {
@@ -115,16 +123,9 @@ export async function onCreateNode({
 }) {
   if (node.internal.type === "S3Object" && node.Key && isImage(node.Key)) {
     try {
-      // get pre-signed URL
-      const url = s3.getSignedUrl("getObject", {
-        Bucket: node.Bucket,
-        Key: node.Key,
-        Expires: 60,
-      });
-
       // download image file and save as node
       const imageFile = await createRemoteFileNode({
-        url,
+        url: node.url,
         parentNodeId: node.id,
         store,
         cache,

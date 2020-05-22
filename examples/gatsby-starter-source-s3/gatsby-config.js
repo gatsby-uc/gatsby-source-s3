@@ -9,9 +9,9 @@ module.exports = {
       resolve: `@robinmetral/gatsby-source-s3`,
       options: {
         aws: {
-          accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-          secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-          region: process.env.AWS_REGION,
+          accessKeyId: process.env.AWS_ACCESS_KEY_ID_,
+          secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY_,
+          region: process.env.AWS_REGION_,
         },
         buckets: [
           "gatsby-source-s3-example",
