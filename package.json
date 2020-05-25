@@ -27,7 +27,7 @@
     "gatsby": "^2.21.33",
     "husky": "^4.2.5",
     "prettier": "^2.0.5",
-    "semantic-release": "^17.0.7",
+    "semantic-release": "^17.0.8",
     "start-server-and-test": "^1.11.0",
     "typescript": "^3.9.2"
   },
