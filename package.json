@@ -41,7 +41,7 @@
     "e2e": "start-server-and-test http://localhost:9000"
   },
   "dependencies": {
-    "aws-sdk": "^2.691.0",
+    "aws-sdk": "^2.696.0",
     "gatsby-source-filesystem": "^2.3.10"
   },
   "publishConfig": {
