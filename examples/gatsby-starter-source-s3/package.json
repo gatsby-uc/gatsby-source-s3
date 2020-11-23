@@ -7,10 +7,10 @@
   "author": "Robin Métral <robin@metral.ch>",
   "dependencies": {
     "@robinmetral/gatsby-source-s3": "file:../../robinmetral-gatsby-source-s3-0.0.0-semantically-released.tgz",
-    "gatsby": "^2.26.1",
-    "gatsby-image": "^2.5.0",
-    "gatsby-plugin-sharp": "^2.8.0",
-    "gatsby-transformer-sharp": "^2.6.0",
+    "gatsby": "^2.27.0",
+    "gatsby-image": "^2.6.0",
+    "gatsby-plugin-sharp": "^2.9.0",
+    "gatsby-transformer-sharp": "^2.7.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   }
