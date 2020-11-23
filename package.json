@@ -24,7 +24,7 @@
     "eslint": "^7.14.0",
     "eslint-config-prettier": "^6.15.0",
     "eslint-plugin-prettier": "^3.1.4",
-    "gatsby": "^2.26.1",
+    "gatsby": "^2.27.0",
     "husky": "^4.3.0",
     "prettier": "^2.2.0",
     "semantic-release": "^17.2.2",
@@ -42,7 +42,7 @@
   },
   "dependencies": {
     "aws-sdk": "^2.797.0",
-    "gatsby-source-filesystem": "^2.5.0"
+    "gatsby-source-filesystem": "^2.6.1"
   },
   "publishConfig": {
     "access": "public"
