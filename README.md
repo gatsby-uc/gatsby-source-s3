@@ -34,7 +34,7 @@ module.exports = {
           region: process.env.AWS_REGION,
         },
         buckets: ["my-bucket", "my-second-bucket"],
-        //expiration: 120,
+        expiration: 120,
       },
     },
   ],
