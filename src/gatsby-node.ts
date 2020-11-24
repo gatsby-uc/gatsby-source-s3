@@ -11,6 +11,7 @@ type pluginOptionsType = {
     region: string;
   };
   buckets: string[];
+  expiration: number;
 };
 
 type ObjectType = AWS.S3.Object & { Bucket: string };
@@ -20,7 +21,7 @@ export async function sourceNodes(
   { actions: { createNode }, createNodeId, createContentDigest, reporter },
   pluginOptions: pluginOptionsType
 ) {
-  const { aws: awsConfig, buckets } = pluginOptions;
+  const { aws: awsConfig, buckets, expiration = 60 } = pluginOptions;
 
   // configure aws
   AWS.config.update(awsConfig);
@@ -91,7 +92,7 @@ export async function sourceNodes(
       const url = s3.getSignedUrl("getObject", {
         Bucket,
         Key,
-        Expires: 60,
+        Expires: expiration,
       });
 
       createNode({

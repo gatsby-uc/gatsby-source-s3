@@ -34,11 +34,14 @@ module.exports = {
           region: process.env.AWS_REGION,
         },
         buckets: ["my-bucket", "my-second-bucket"],
+        expiration: 120,
       },
     },
   ],
 };
 ```
+
+The value of expiration specifies the time after which signed requests to S3 will expire. The default value is 60 seconds. Feel free to increase if you have many or large images and start to see errors similar to "HTTPError: Response code 403 (Forbidden)" during build. This option is not compulsory.
 
 ### AWS setup
 
