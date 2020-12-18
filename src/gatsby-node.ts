@@ -21,7 +21,7 @@ export async function sourceNodes(
   { actions: { createNode }, createNodeId, createContentDigest, reporter },
   pluginOptions: pluginOptionsType
 ) {
-  const { aws: awsConfig, buckets, expiration = 60 } = pluginOptions;
+  const { aws: awsConfig, buckets, expiration = 900 } = pluginOptions;
 
   // configure aws
   AWS.config.update(awsConfig);
