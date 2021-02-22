@@ -24,7 +24,7 @@
     "eslint": "^7.20.0",
     "eslint-config-prettier": "^7.2.0",
     "eslint-plugin-prettier": "^3.3.1",
-    "gatsby": "^2.32.3",
+    "gatsby": "^2.32.4",
     "husky": "^4.3.8",
     "prettier": "^2.2.1",
     "semantic-release": "^17.3.9",
