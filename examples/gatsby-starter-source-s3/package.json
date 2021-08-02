@@ -7,7 +7,7 @@
   "author": "Robin Métral <robin@metral.ch>",
   "dependencies": {
     "@robinmetral/gatsby-source-s3": "file:../../robinmetral-gatsby-source-s3-0.0.0-semantically-released.tgz",
-    "gatsby": "^3.10.1",
+    "gatsby": "^3.10.2",
     "gatsby-image": "^3.10.0",
     "gatsby-plugin-sharp": "^3.10.2",
     "gatsby-transformer-sharp": "^3.10.0",
