@@ -8,7 +8,7 @@
   "dependencies": {
     "@robinmetral/gatsby-source-s3": "file:../../robinmetral-gatsby-source-s3-0.0.0-semantically-released.tgz",
     "gatsby": "^3.14.3",
-    "gatsby-image": "^3.11.0",
+    "gatsby-plugin-image": "^1.14.0",
     "gatsby-plugin-sharp": "^3.14.1",
     "gatsby-transformer-sharp": "^3.14.0",
     "react": "^17.0.2",
