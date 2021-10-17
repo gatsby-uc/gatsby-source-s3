@@ -34,11 +34,11 @@
   "scripts": {
     "build": "tsc",
     "lint": "eslint '*/**/*.{ts,tsx}'",
-    "prestart": "yarn build && npm pack && (cd examples/gatsby-starter-source-s3 && yarn install)",
+    "prestart": "yarn build && npm pack && (cd examples/gatsby-starter-source-s3 && yarn add ../../robinmetral-gatsby-source-s3-0.0.0-semantically-released.tgz)",
     "start": "(cd examples/gatsby-starter-source-s3 && yarn build && yarn serve)",
-    "start:local": "yarn cache clean && (cd examples/gatsby-starter-source-s3 && rm -rf node_modules .cache public yarn.lock) && yarn start",
     "test": "cypress run",
-    "e2e": "start-server-and-test http://localhost:9000"
+    "e2e": "start-server-and-test http://localhost:9000",
+    "prepare": "husky install"
   },
   "dependencies": {
     "aws-sdk": "^2.1004.0",
@@ -46,11 +46,6 @@
   },
   "publishConfig": {
     "access": "public"
-  },
-  "husky": {
-    "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
   },
   "release": {
     "branches": [

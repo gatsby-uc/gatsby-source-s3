@@ -1,6 +1,6 @@
 import React from "react";
 import { graphql } from "gatsby";
-import Img from "gatsby-image";
+import { GatsbyImage } from "gatsby-plugin-image";
 
 const IndexPage = ({ data }) => (
   <main style={{ fontFamily: "monospace" }}>
@@ -14,7 +14,10 @@ const IndexPage = ({ data }) => (
     >
       {data.allS3Object.nodes.map((image) => (
         <div className={`s3-image ${image.Key}-${image.Bucket}`}>
-          <Img fixed={image.localFile.childImageSharp.fixed} alt={image.Key} />
+          <GatsbyImage
+            image={image.localFile.childImageSharp.gatsbyImageData}
+            alt={image.Key}
+          />
           <br />
           Key: {image.Key}
           <br />
@@ -38,9 +41,7 @@ export const IMAGES_QUERY = graphql`
         Bucket
         localFile {
           childImageSharp {
-            fixed(width: 256) {
-              ...GatsbyImageSharpFixed
-            }
+            gatsbyImageData(layout: FIXED, width: 256)
           }
         }
       }
