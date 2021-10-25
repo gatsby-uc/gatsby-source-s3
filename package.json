@@ -19,7 +19,7 @@
     "@commitlint/config-conventional": "^13.2.0",
     "@types/node": "^16.10.8",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
-    "@typescript-eslint/parser": "^5.0.0",
+    "@typescript-eslint/parser": "^5.1.0",
     "cypress": "^8.6.0",
     "eslint": "^8.1.0",
     "eslint-config-prettier": "^8.3.0",
