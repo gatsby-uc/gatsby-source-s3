@@ -41,7 +41,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
-    "aws-sdk": "^2.1013.0",
+    "aws-sdk": "^2.1018.0",
     "gatsby-source-filesystem": "^3.14.0"
   },
   "publishConfig": {
