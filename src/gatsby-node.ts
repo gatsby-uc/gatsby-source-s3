@@ -144,3 +144,11 @@ export async function onCreateNode({
     }
   }
 }
+
+export async function createSchemaCustomization({ actions }) {
+  actions.createTypes(`
+    type S3Object implements Node {
+      localFile: File @link
+    }
+  `);
+}
