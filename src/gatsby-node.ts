@@ -1,4 +1,5 @@
 import { createRemoteFileNode } from "gatsby-source-filesystem";
+import { CreateNodeArgs, SourceNodesArgs } from "gatsby";
 import AWS = require("aws-sdk");
 
 const isImage = (key: string): boolean =>
@@ -16,9 +17,16 @@ type pluginOptionsType = {
 
 type ObjectType = AWS.S3.Object & { Bucket: string };
 
+type NodeType = ObjectType & { url: string; [key: string]: string };
+
 // source all objects from s3
 export async function sourceNodes(
-  { actions: { createNode }, createNodeId, createContentDigest, reporter },
+  {
+    actions: { createNode },
+    createNodeId,
+    createContentDigest,
+    reporter,
+  }: SourceNodesArgs,
   pluginOptions: pluginOptionsType
 ) {
   const { aws: awsConfig, buckets, expiration = 900 } = pluginOptions;
@@ -82,8 +90,7 @@ export async function sourceNodes(
     );
 
     // flatten objects
-    // flat() is not supported in node 10
-    const objects = allBucketsObjects.reduce((acc, val) => acc.concat(val), []);
+    const objects = allBucketsObjects.flat();
 
     // create file nodes
     objects?.forEach(async (object) => {
@@ -110,18 +117,18 @@ export async function sourceNodes(
       });
     });
   } catch (error) {
-    reporter.error(error);
+    reporter.error(`Error sourcing nodes: ${error}`);
   }
 }
 
 export async function onCreateNode({
   node,
-  actions: { createNode },
+  actions: { createNode, createNodeField },
   store,
   cache,
   reporter,
   createNodeId,
-}) {
+}: CreateNodeArgs<NodeType>) {
   if (node.internal.type === "S3Object" && node.Key && isImage(node.Key)) {
     try {
       // download image file and save as node
@@ -137,10 +144,12 @@ export async function onCreateNode({
 
       if (imageFile) {
         // add local image file to s3 object node
-        node.localFile = imageFile.id;
+        createNodeField({ node, name: "localFile", value: imageFile.id });
       }
     } catch (error) {
-      reporter.error(error);
+      reporter.error(
+        `Error creating file node for S3 object key "${node.Key}": ${error}`
+      );
     }
   }
 }
@@ -148,7 +157,7 @@ export async function onCreateNode({
 export async function createSchemaCustomization({ actions }) {
   actions.createTypes(`
     type S3Object implements Node {
-      localFile: File @link
+      localFile: File @link(from: "fields.localFile")
     }
   `);
 }
