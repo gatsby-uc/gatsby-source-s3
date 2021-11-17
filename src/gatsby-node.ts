@@ -1,5 +1,9 @@
 import { createRemoteFileNode } from "gatsby-source-filesystem";
-import { CreateNodeArgs, SourceNodesArgs } from "gatsby";
+import type {
+  CreateNodeArgs,
+  SourceNodesArgs,
+  CreateSchemaCustomizationArgs,
+} from "gatsby";
 import AWS = require("aws-sdk");
 
 const isImage = (key: string): boolean =>
@@ -154,7 +158,9 @@ export async function onCreateNode({
   }
 }
 
-export async function createSchemaCustomization({ actions }) {
+export async function createSchemaCustomization({
+  actions,
+}: CreateSchemaCustomizationArgs) {
   actions.createTypes(`
     type S3Object implements Node {
       localFile: File @link(from: "fields.localFile")
