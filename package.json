@@ -46,7 +46,7 @@
     "gatsby-source-filesystem": "^4.2.0"
   },
   "peerDependencies": {
-    "gatsby": "^4.0.1"
+    "gatsby": "^4.2.0"
   },
   "publishConfig": {
     "access": "public"
