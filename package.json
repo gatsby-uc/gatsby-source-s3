@@ -22,7 +22,7 @@
     "@typescript-eslint/parser": "^5.9.1",
     "cypress": "^9.2.1",
     "@tsconfig/node14": "^1.0.1",
-    "eslint": "^8.6.0",
+    "eslint": "^8.7.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "gatsby": "^4.4.0",
